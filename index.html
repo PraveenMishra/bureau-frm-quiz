@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bureau FRM — Sales Readiness Quiz</title>
+<style>
+  :root{--blue:#1a3a5c;--acc:#0e7adb;--lt:#e8f2fd;--ok:#16a34a;--bad:#dc2626;--warn:#d97706;--g100:#f3f4f6;--g200:#e5e7eb;--g400:#9ca3af;--g500:#6b7280;--g700:#374151;--wh:#ffffff}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:linear-gradient(135deg,#0f2744,#1a4a7a);min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:24px 16px}
+  .wrap{background:var(--wh);border-radius:16px;width:100%;max-width:800px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+  .hdr{background:var(--blue);color:#fff;padding:20px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+  .hdr h1{font-size:1.15rem;font-weight:700}.hdr p{font-size:.75rem;opacity:.7;margin-top:2px}
+  .tmr{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:8px 14px;text-align:center;min-width:88px}
+  .tmr .tl{font-size:.6rem;opacity:.7;text-transform:uppercase;letter-spacing:.05em}
+  .tmr .tv{font-size:1.35rem;font-weight:700;font-variant-numeric:tabular-nums}
+  .tmr.warn .tv{color:#fbbf24}.tmr.danger .tv{color:#f87171;animation:blink .8s infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+  .pw{background:var(--g200);height:5px}.pf{height:100%;background:linear-gradient(90deg,#0e7adb,#38bdf8);transition:width .4s}
+  .pi{padding:8px 28px;display:flex;justify-content:space-between;align-items:center;font-size:.77rem;color:var(--g500);background:var(--g100);border-bottom:1px solid var(--g200)}
+  .wb{display:inline-flex;align-items:center;gap:4px;border-radius:99px;padding:2px 10px;font-size:.7rem;font-weight:600}
+  .w3{background:#fef3c7;color:#b45309;border:1px solid #fde68a}
+  .w2{background:#ede9fe;color:#7c3aed;border:1px solid #c4b5fd}
+  .w1{background:var(--lt);color:var(--acc);border:1px solid #bfdbfe}
+  .qa{padding:28px 28px 16px}
+  .qtg{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--g500);margin-bottom:8px}
+  .qtg.cr{color:#b45309}
+  .qtx{font-size:1rem;font-weight:600;color:var(--g700);line-height:1.55;margin-bottom:18px}
+  .ol{list-style:none;display:flex;flex-direction:column;gap:9px}
+  .oi label{display:flex;align-items:flex-start;gap:11px;padding:11px 14px;border:2px solid var(--g200);border-radius:9px;cursor:pointer;transition:all .16s;font-size:.9rem;color:var(--g700);line-height:1.45}
+  .oi label:hover{border-color:var(--acc);background:var(--lt)}
+  .oi input{display:none}
+  .om{width:22px;height:22px;border-radius:50%;border:2px solid var(--g200);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:700;color:var(--g500);margin-top:1px;transition:all .16s}
+  .oi.sel label{border-color:var(--acc);background:var(--lt)}.oi.sel .om{background:var(--acc);border-color:var(--acc);color:#fff}
+  .oi.ok label{border-color:var(--ok);background:#f0fdf4}.oi.ok .om{background:var(--ok);border-color:var(--ok);color:#fff}
+  .oi.ng label{border-color:var(--bad);background:#fef2f2}.oi.ng .om{background:var(--bad);border-color:var(--bad);color:#fff}
+  .oi.dim label{opacity:.45;cursor:default;pointer-events:none}
+  .oi label.off{pointer-events:none}
+  .ex{margin:12px 28px 0;padding:12px 14px;border-radius:9px;font-size:.83rem;line-height:1.5;display:none}
+  .ex.ok{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
+  .ex.ng{background:#fef2f2;border:1px solid #fecaca;color:#991b1b}
+  .ex b{display:block;margin-bottom:3px}
+  .nv{padding:16px 28px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  .sl{font-size:.78rem;color:var(--g500)}
+  .btn{padding:9px 22px;border-radius:8px;border:none;font-size:.88rem;font-weight:600;cursor:pointer;transition:all .16s}
+  .bp{background:var(--acc);color:#fff}.bp:hover{background:#0b68c0}.bp:disabled{background:var(--g200);color:var(--g500);cursor:not-allowed}
+  .bs{background:var(--g100);color:var(--g700);border:1px solid var(--g200)}.bs:hover{background:var(--g200)}
+  .br{display:flex;gap:8px;flex-wrap:wrap}
+  #land{padding:36px 28px;text-align:center}
+  #land h2{font-size:1.4rem;color:var(--blue);margin-bottom:8px}
+  .sub{color:var(--g500);font-size:.88rem;max-width:520px;margin:0 auto 22px;line-height:1.65}
+  .ic{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:20px}
+  .icc{background:var(--g100);border-radius:10px;padding:14px 10px;text-align:center}
+  .icc .in{font-size:1.5rem;font-weight:800;color:var(--acc)}.icc .il{font-size:.72rem;color:var(--g500);margin-top:3px}
+  .lg{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;font-size:.77rem;color:var(--g500)}
+  .lg span{display:flex;align-items:center;gap:5px}
+  .nf{background:var(--g100);border-radius:10px;padding:18px 20px;margin:0 auto 20px;max-width:440px;text-align:left}
+  .nf h3{font-size:.9rem;font-weight:700;color:var(--g700);margin-bottom:12px}
+  .fr{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+  .fr label{font-size:.78rem;font-weight:600;color:var(--g500)}
+  .fr input{padding:9px 12px;border:1px solid var(--g200);border-radius:7px;font-size:.88rem;color:var(--g700);outline:none;transition:border-color .16s}
+  .fr input:focus{border-color:var(--acc)}.fr input.er{border-color:var(--bad)}
+  .em{font-size:.72rem;color:var(--bad);margin-top:3px;display:none}
+  #res{padding:32px 28px;text-align:center;display:none}
+  .rc{width:120px;height:120px;border-radius:50%;margin:0 auto 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;font-size:1.8rem;border:6px solid}
+  .rc.pass{border-color:var(--ok);color:var(--ok);background:#f0fdf4}
+  .rc.fail{border-color:var(--bad);color:var(--bad);background:#fef2f2}
+  .rc.mrk{border-color:var(--warn);color:var(--warn);background:#fffbeb}
+  .rc .rl{font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+  #res h2{font-size:1.3rem;color:var(--blue);margin-bottom:6px}
+  .rs{color:var(--g500);font-size:.88rem;margin-bottom:20px}
+  .sb{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:22px}
+  .sc{background:var(--g100);border-radius:10px;padding:14px 10px}.sc .sn{font-size:1.3rem;font-weight:800;color:var(--blue)}.sc .sl2{font-size:.7rem;color:var(--g500);margin-top:2px}
+  .shb{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:14px 16px;margin-bottom:18px;font-size:.82rem;color:#166534;text-align:left}
+  .shb b{display:block;margin-bottom:6px;font-size:.85rem}
+  .shc{background:#fff;border:1px solid #bbf7d0;border-radius:6px;padding:8px 10px;font-family:monospace;font-size:.77rem;word-break:break-all;margin-bottom:8px;color:#166534;user-select:all}
+  .rt{background:none;border:1px solid var(--g200);color:var(--g500);border-radius:7px;padding:7px 16px;font-size:.8rem;cursor:pointer;margin-bottom:14px}
+  .rt:hover{background:var(--g100)}
+  .rl2{text-align:left;display:none}
+  .ri{padding:12px 0;border-bottom:1px solid var(--g200);font-size:.82rem}.ri:last-child{border-bottom:none}
+  .rq{font-weight:600;color:var(--g700);margin-bottom:5px}
+  .ry{color:var(--bad)}.ry.ok{color:var(--ok)}.rco{color:var(--ok);font-style:italic}
+  .rp{display:inline-block;font-size:.68rem;font-weight:600;padding:1px 7px;border-radius:99px;margin-left:6px}
+  .rp.e{background:#dcfce7;color:#166534}.rp.m{background:#fee2e2;color:#991b1b}
+  #adm-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;align-items:center;justify-content:center;padding:20px}
+  #adm-ov.open{display:flex}
+  .abx{background:#fff;border-radius:14px;width:100%;max-width:740px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+  .ahdr{background:var(--blue);color:#fff;padding:18px 24px;display:flex;justify-content:space-between;align-items:center;border-radius:14px 14px 0 0;position:sticky;top:0;z-index:10}
+  .ahdr h2{font-size:1rem;font-weight:700}
+  .cbtn{background:rgba(255,255,255,.15);border:none;color:#fff;border-radius:6px;padding:5px 10px;cursor:pointer;font-size:.8rem}
+  .cbtn:hover{background:rgba(255,255,255,.25)}
+  .abdy{padding:20px 24px}
+  .ast{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:20px}
+  .as{background:var(--g100);border-radius:9px;padding:12px;text-align:center}
+  .as .an{font-size:1.4rem;font-weight:800;color:var(--acc)}.as .al{font-size:.7rem;color:var(--g500);margin-top:2px}
+  .tt{width:100%;border-collapse:collapse;font-size:.82rem}
+  .tt th{background:var(--g100);padding:8px 10px;text-align:left;font-weight:600;color:var(--g500);border-bottom:2px solid var(--g200)}
+  .tt td{padding:9px 10px;border-bottom:1px solid var(--g200);vertical-align:middle}
+  .tt tr:last-child td{border-bottom:none}.tt tr:hover td{background:var(--g100)}
+  .sd{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+  .dd{background:var(--ok)}.dp{background:var(--g400)}
+  .mb{padding:4px 10px;border-radius:5px;border:none;font-size:.72rem;font-weight:600;cursor:pointer}
+  .md{background:#dcfce7;color:#166534}.md:hover{background:#bbf7d0}
+  .mu{background:#fee2e2;color:#991b1b}.mu:hover{background:#fecaca}
+  .scl{font-weight:700;color:var(--blue)}
+  .am{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+  .am input{flex:1;min-width:160px;padding:7px 10px;border:1px solid var(--g200);border-radius:6px;font-size:.82rem}
+  .er2{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+  .alog{padding:28px;text-align:center}
+  .alog h3{color:var(--blue);margin-bottom:8px;font-size:1rem}
+  .alog p{color:var(--g500);font-size:.82rem;margin-bottom:16px}
+  .alog input{width:100%;max-width:280px;padding:9px 12px;border:1px solid var(--g200);border-radius:7px;font-size:.9rem;text-align:center;margin-bottom:10px;display:block;margin-left:auto;margin-right:auto}
+  .pe{color:var(--bad);font-size:.78rem;margin-top:4px;display:none}
+  .wi{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:12px 14px;margin-top:14px;font-size:.78rem;color:#92400e}
+  .wi b{display:block;margin-bottom:4px}
+  .wi code{background:#fef3c7;padding:1px 5px;border-radius:3px;font-size:.75rem}
+  .al2{position:fixed;bottom:16px;right:16px;background:var(--blue);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:.75rem;cursor:pointer;opacity:.7;transition:opacity .2s;z-index:50}
+  .al2:hover{opacity:1}
+  #quiz{display:none}
+
+  /* Completed lock */
+  .lock-box{background:#fef3c7;border:2px solid #fbbf24;border-radius:12px;padding:24px;margin:0 auto 20px;max-width:440px;text-align:left}
+  .lock-box h3{color:#92400e;font-size:1rem;margin-bottom:8px}
+  .lock-box p{color:#78350f;font-size:.85rem;line-height:1.55;margin-bottom:4px}
+  .lock-score{font-size:2rem;font-weight:800;color:#92400e;text-align:center;padding:10px 0}
+  /* Screenshot preview */
+  .ss-hint{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:10px 14px;font-size:.78rem;color:#166534;margin-top:8px;display:none}
+  /* Live dashboard */
+  .ld-hdr{display:flex;align-items:center;justify-content:space-between;margin:18px 0 10px}
+  .ld-hdr h3{font-size:.88rem;font-weight:700;color:var(--g700)}
+  .ld-pill{display:inline-flex;align-items:center;gap:5px;font-size:.72rem;font-weight:600;padding:3px 10px;border-radius:99px;background:#fee2e2;color:#991b1b}
+  .ld-pill.live{background:#dcfce7;color:#166534}
+  .ld-url{width:100%;padding:7px 10px;border:1px solid var(--g200);border-radius:6px;font-size:.75rem;margin-top:8px;font-family:monospace}
+  .ld-note{font-size:.72rem;color:var(--g500);margin-top:5px;line-height:1.5}
+  .ld-note code{background:var(--g100);padding:1px 4px;border-radius:3px;font-size:.7rem}
+  @media(max-width:500px){.hdr,.qa,.nv,.pi,.ex{padding-left:16px;padding-right:16px}#land,#res,.abdy{padding-left:16px;padding-right:16px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hdr">
+    <div><h1>Bureau FRM — Sales Readiness Quiz</h1><p>India Sales Team · Post-Training Assessment · Apr 2026</p></div>
+    <div class="tmr" id="tb"><div class="tl">Time Left</div><div class="tv" id="tv">20:00</div></div>
+  </div>
+
+  <!-- LANDING -->
+  <div id="land">
+    <h2>Are you FRM-ready?</h2>
+    <p class="sub">20 questions drawn exclusively from the April 2, 2026 sales training. Questions AND answer options are reshuffled on every attempt — making copying difficult.</p>
+    <div class="ic">
+      <div class="icc"><div class="in">20</div><div class="il">Questions</div></div>
+      <div class="icc"><div class="in">44</div><div class="il">Total Points</div></div>
+      <div class="icc"><div class="in">20</div><div class="il">Minutes</div></div>
+      <div class="icc"><div class="in">70%</div><div class="il">Pass Mark</div></div>
+    </div>
+    <div class="lg">
+      <span><span class="wb w3">★★★ 3 pts</span> Critical / Hard</span>
+      <span><span class="wb w2">★★ 2 pts</span> Important / Medium</span>
+      <span><span class="wb w1">★ 1 pt</span> Foundational / Easy</span>
+    </div>
+    <div class="nf">
+      <h3>Enter your details to begin</h3>
+      <div class="fr"><label>Full Name *</label><input type="text" id="iname" placeholder="e.g. Abhishek Singh" /><div class="em" id="ename">Please enter your name</div></div>
+      <div class="fr"><label>Bureau Email *</label><input type="email" id="iemail" placeholder="e.g. abhishek@bureau.id" /><div class="em" id="eemail">Please enter a valid email</div></div>
+    </div>
+    <div id="lock-msg" style="display:none">
+      <div class="lock-box">
+        <h3>🔒 Quiz Already Completed</h3>
+        <div class="lock-score" id="lock-score">—</div>
+        <p id="lock-detail">You have already submitted this quiz.</p>
+        <p style="margin-top:10px;font-size:.78rem;color:#92400e">To request a retake, email <strong>praveen@bureau.id</strong></p>
+      </div>
+    </div>
+    <button class="btn bp" id="start-btn" onclick="startQuiz()" style="font-size:.95rem;padding:11px 38px">Start Quiz →</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quiz">
+    <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+    <div class="pi"><span id="pt">Question 1 of 20</span><span id="wd" class="wb w1"></span></div>
+    <div class="qa"><div class="qtg" id="qtg"></div><div class="qtx" id="qtx"></div><ul class="ol" id="ol"></ul></div>
+    <div class="ex" id="ex"><b id="el"></b><span id="et"></span></div>
+    <div class="nv">
+      <div class="sl" id="sl">Score: 0 / 44 pts</div>
+      <div class="br">
+        <button class="btn bs" id="bsub" onclick="submit()">Submit Answer</button>
+        <button class="btn bp" id="bnxt" onclick="next()" style="display:none">Next →</button>
+        <button class="btn bp" id="bfin" onclick="showRes()" style="display:none">See Results →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="res">
+    <div class="rc" id="rcirc"><span id="rpct">--</span><span class="rl" id="rvrd">--</span></div>
+    <h2 id="rhead">Quiz Complete</h2>
+    <p class="rs" id="rsub"></p>
+    <div class="sb" id="sbrk"></div>
+    <div class="shb">
+      <b>📤 Send your result to the admin</b>
+      <div class="shc" id="shc"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn bp" onclick="copyRes()" style="font-size:.8rem;padding:7px 14px">📋 Copy Result</button>
+        <button class="btn bs" onclick="mailRes()" style="font-size:.8rem;padding:7px 14px">✉️ Email to Admin</button>
+      </div>
+      <div class="ss-hint" id="ss-hint"></div>
+    </div>
+    <button class="rt" onclick="togRev()">▼ Show Detailed Review</button>
+    <div class="rl2" id="rl2"></div>
+
+  </div>
+</div>
+
+<button class="al2" onclick="openAdm()">🔐 Admin</button>
+
+<!-- ADMIN OVERLAY -->
+<div id="adm-ov">
+  <div class="abx">
+    <div class="ahdr"><h2>Admin Panel — Quiz Completion Tracker</h2><button class="cbtn" onclick="closeAdm()">✕ Close</button></div>
+    <div class="alog" id="alog">
+      <h3>Admin Access</h3>
+      <p>Password-protected. Results are stored locally in your browser's storage.</p>
+      <input type="password" id="apw" placeholder="Password" onkeydown="if(event.key==='Enter')chkPw()" />
+      <div class="pe" id="pwe">Incorrect password.</div>
+      <button class="btn bp" onclick="chkPw()" style="margin-top:4px">Unlock →</button>
+      <div class="wi">
+        <b>💡 Auto-tracking via Google Apps Script (optional — zero cost)</b>
+        Deploy a Google Apps Script Web App and paste the URL into <code>WEBHOOK_URL</code> in this file's JS config section. Results will POST there and append to a Google Sheet automatically. See code comments for the 5-minute setup.
+      </div>
+    </div>
+    <div class="abdy" id="adsh" style="display:none">
+      <div class="ast" id="astats"></div>
+      <table class="tt"><thead><tr><th>Name</th><th>Email</th><th>Score</th><th>%</th><th>Status</th><th>Date</th><th>Action</th></tr></thead><tbody id="atbody"></tbody></table>
+      <div class="am"><input type="text" id="aname" placeholder="Add team member…" /><input type="email" id="aemail" placeholder="email@bureau.id" /><button class="btn bs" onclick="addM()" style="font-size:.8rem;padding:7px 14px">+ Add</button></div>
+      <div class="er2">
+        <button class="btn bs" onclick="expCSV()" style="font-size:.78rem;padding:7px 14px">⬇ Export CSV</button>
+        <button class="btn bs" onclick="clrAdm()" style="font-size:.78rem;padding:7px 14px;color:var(--bad)">🗑 Clear Scores</button>
+        <button class="btn bs" onclick="renderAdm()" style="font-size:.78rem;padding:7px 14px">↺ Refresh</button>
+      </div>
+      <!-- LIVE DASHBOARD via Webhook -->
+      <div class="ld-hdr">
+        <h3>🔴 Live Feed <span id="ld-status" class="ld-pill">Not configured</span></h3>
+        <button class="btn bs" onclick="fetchDash()" style="font-size:.72rem;padding:5px 10px">⟳ Refresh Now</button>
+      </div>
+      <div id="ld-table-wrap" style="overflow-x:auto">
+        <table class="tt" id="ld-table" style="display:none">
+          <thead><tr><th>Name</th><th>Email</th><th>Score</th><th>%</th><th>Passed</th><th>Submitted</th></tr></thead>
+          <tbody id="ld-body"></tbody>
+        </table>
+        <p id="ld-msg" style="font-size:.8rem;color:var(--g500);padding:10px 0">Configure the webhook URL to enable cross-device live tracking.</p>
+      </div>
+      <div>
+        <label style="font-size:.75rem;font-weight:600;color:var(--g500);display:block;margin-bottom:4px">Webhook / Dashboard URL (Google Apps Script)</label>
+        <input id="ld-url-in" class="ld-url" type="text" placeholder="https://script.google.com/macros/s/…/exec" value="https://script.google.com/macros/s/AKfycbyvghyomkwbPuVmqcbDrm5QM7MGgip0MuVUIfm7DGZCpjDu8cD6XRhEVTeXo0beS1bZ/exec" oninput="saveDashUrl(this.value)" />
+        <p class="ld-note">
+          Deploy a Google Apps Script web app and paste the URL above. It handles both POST (quiz results) and GET (dashboard fetch).<br/>
+          <strong>5-min setup:</strong> script.google.com → New project → paste the code below → Deploy as Web App → set access to <em>Anyone</em> → copy URL.<br/>
+          <code>GAS code is embedded in this file — search for "GAS_SETUP" in page source</code>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+
+/* ── GAS_SETUP: Deploy this at script.google.com → New project → Deploy as Web App (Anyone) ──
+function doPost(e){
+  var d=JSON.parse(e.postData.contents);
+  var ss=SpreadsheetApp.getActiveSpreadsheet();
+  var sh=ss.getSheetByName('Responses')||ss.insertSheet('Responses');
+  if(sh.getLastRow()===0)sh.appendRow(['Timestamp','Name','Email','Score','Total','Pct','Passed']);
+  sh.appendRow([d.ts,d.name,d.email,d.score,d.total,d.pct,d.passed?'Yes':'No']);
+  return ContentService.createTextOutput('ok');
+}
+function doGet(e){
+  var ss=SpreadsheetApp.getActiveSpreadsheet();
+  var sh=ss.getSheetByName('Responses');
+  if(!sh||sh.getLastRow()<2)return ContentService.createTextOutput('[]').setMimeType(ContentService.MimeType.JSON);
+  var data=sh.getDataRange().getValues();
+  var hdrs=data[0];
+  var rows=data.slice(1).map(function(r){var o={};hdrs.forEach(function(h,i){o[String(h).toLowerCase().replace('%','')]=r[i];});return o;});
+  return ContentService.createTextOutput(JSON.stringify(rows)).setMimeType(ContentService.MimeType.JSON);
+}
+── END GAS_SETUP ── */
+// ── CONFIG ────────────────────────────────────────────────────────────────────
+const ADMIN_PW    = "Bureau@2026";
+const ADMIN_EMAIL = "praveen@bureau.id";
+const ADMIN_CC    = "nagmanjunath@bureau.id,gopal@bureau.id";
+const PASS_THRESH = 0.70;
+const TIME_SEC    = 20 * 60;
+const TOTAL_PTS   = 44;
+
+// Optional Google Apps Script URL for auto-logging (see comments in code above)
+// Setup: script.google.com → New project → paste doPost function → Deploy as Web App → copy URL
+// doPost function: function doPost(e){var d=JSON.parse(e.postData.contents);SpreadsheetApp.openById("SHEET_ID").getActiveSheet().appendRow([d.ts,d.name,d.email,d.score,d.total,d.pct,d.passed]);return ContentService.createTextOutput("ok")}
+const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyvghyomkwbPuVmqcbDrm5QM7MGgip0MuVUIfm7DGZCpjDu8cD6XRhEVTeXo0beS1bZ/exec"; // Google Apps Script Web App
+const DASH_POLL_SEC = 60; // live dashboard refresh interval in seconds
+
+// ── TEAM ──────────────────────────────────────────────────────────────────────
+const DEFAULT_TEAM = [
+  {name:"Gopal Sharma",email:"gopal@bureau.id"},
+  {name:"Nagmanjunath Shivakumar",email:"nagmanjunath@bureau.id"},
+  {name:"Anoop M S",email:"anoop@bureau.id"},
+  {name:"Chirag Mehta",email:"chirag@bureau.id"},
+  {name:"Divya Aggarwal",email:"divya.aggarwal@bureau.id"},
+  {name:"Divya Tripathi",email:"divya.tripathi@bureau.id"},
+  {name:"Jahnvi Shah",email:"jahnvi@bureau.id"},
+  {name:"Komal Saboo",email:"komal@bureau.id"},
+  {name:"Meherveen Kaur Anand",email:"meherveen@bureau.id"},
+  {name:"Pratibha Baheti",email:"pratibha@bureau.id"},
+  {name:"Abhishek Singh",email:"abhishek@bureau.id"},
+  {name:"Suraj Pujari",email:"suraj@bureau.id"},
+  {name:"Triya Shah",email:"triya@bureau.id"},
+  {name:"Vedant Chinta",email:"vedant@bureau.id"},
+  {name:"Kiran Kalyan",email:"kiran@bureau.id"},
+  {name:"Pranav Srivastava",email:"pranav@bureau.id"},
+  {name:"Kritika Agrawal",email:"kritika@bureau.id"},
+  {name:"Priyam Agarwal",email:"priyam@bureau.id"},
+  {name:"Support Team",email:"support@bureau.id"},
+];
+
+// ── QUESTIONS (20) ────────────────────────────────────────────────────────────
+const QS = [
+  {id:1,w:3,cat:"What Bureau FRM Does NOT Do",
+   q:"According to the training, which of the following is explicitly identified as an area Bureau's FRM should NOT pursue — at least in the first year?",
+   opts:[{t:"Real-time transaction monitoring across payment channels",c:false},{t:"Device intelligence and behavioral signal integration",c:false},{t:"Lending and credit default (loan) use cases",c:true},{t:"Case management and fraud investigation workflows",c:false}],
+   ex:"Praveen Mishra explicitly stated: 'Let's not go initially in the first year on the lending use cases for the fraud risk management.' FRM focuses on fraud from a specific transaction instance — not credit defaults from lending."},
+  {id:2,w:3,cat:"What Bureau FRM Does NOT Do",
+   q:"Bureau's FRM does NOT replace or replicate the function of which type of organisation, even though their data can optionally be used as an input signal?",
+   opts:[{t:"Card Management System vendors such as M2P",c:false},{t:"Credit bureaus like TransUnion, CIBIL, or HighMark",c:true},{t:"National Payments Corporation of India (NPCI)",c:false},{t:"Core Banking System vendors like Infosys Finacle",c:false}],
+   ex:"Dedicated credit bureaus (TransUnion, CIBIL, HighMark) assess loan defaults and have operated for ~20 years. Bureau's FRM can receive a credit score as an optional input signal but does not replace this function."},
+  {id:3,w:3,cat:"What Bureau FRM Does NOT Do",
+   q:"Does Bureau's FRM currently provide complete goAML support for anti-money laundering regulatory reporting to financial intelligence units?",
+   opts:[{t:"Yes — Bureau FRM has full goAML integration and generates goAML-format XML reports natively",c:false},{t:"No — complete goAML support is not available in Bureau FRM at this time",c:true},{t:"goAML is only required by international banks; Indian banks do not need it",c:false},{t:"goAML support is included but only for Tier-1 scheduled commercial banks",c:false}],
+   ex:"Bureau's FRM does not currently have complete goAML support. goAML is the UNODC standard for financial intelligence unit reporting. This is a known current limitation — be transparent about it rather than overpromising to prospects."},
+  {id:4,w:3,cat:"Technical Architecture",
+   q:"For a debit card transaction, which statement correctly describes how authentication and authorization are split across bank systems?",
+   opts:[{t:"Both authentication and authorization happen at the Core Banking System (CBS)",c:false},{t:"Authentication at the Core Banking System; authorization at the Card Management System",c:false},{t:"Authentication at the Card Management System (CMS/3DS); authorization at the Core Banking System (CBS)",c:true},{t:"Both authentication and authorization happen at the Card Management System (CMS)",c:false}],
+   ex:"Authentication (validating card number, expiry, name) happens at the CMS/3DS layer. Authorization (checking whether the account has sufficient funds) happens at the CBS — because the debit card is linked to the bank account."},
+  {id:5,w:3,cat:"Technical Architecture",
+   q:"In a UPI transaction, where does authentication occur and where does authorization occur?",
+   opts:[{t:"Authentication at CBS; authorization at NPCI",c:false},{t:"Authentication at the Third-Party App (TPA); authorization at NPCI",c:false},{t:"Authentication at NPCI; authorization at the Core Banking System (CBS)",c:true},{t:"Authentication at CBS; authorization at the Third-Party App (TPA)",c:false}],
+   ex:"For UPI, authentication (verifying the VPA) occurs at the NPCI layer. Authorization (confirming fund availability) occurs at the CBS — because UPI is always linked to the bank account."},
+  {id:6,w:3,cat:"RBI & Compliance",
+   q:"Under the new RBI rule effective April 1st 2026, in an 'Authorised Push Payment' fraud scenario, what percentage of liability does RBI itself absorb?",
+   opts:[{t:"35%",c:false},{t:"50%",c:false},{t:"65%",c:true},{t:"80%",c:false}],
+   ex:"Praveen confirmed: 'RBI is taking 65% of the liability, and the rest is split between the issuing and acquiring sides.' This makes acquiring entities like Swiggy and Scapia (who co-brand or own wallets) newly liable and strong FRM prospects."},
+  {id:7,w:2,cat:"FRM vs Financial Risk Management",
+   q:"What is the CORE distinguishing factor between Fraud Risk Management (FRM) and Financial Risk Management, as discussed in the training?",
+   opts:[{t:"FRM covers only card transactions; Financial RM covers all channels including UPI",c:false},{t:"FRM focuses on fraud from a specific transaction instance; Financial RM includes lending and credit defaults",c:true},{t:"FRM always operates in real-time; Financial RM always runs in batch mode",c:false},{t:"FRM requires credit bureau data as a mandatory input; Financial RM does not",c:false}],
+   ex:"'Fraud risk management focuses on fraud resulting from a specific instance, not defaults.' Financial RM encompasses lending, credit history, and loan default risk — handled by dedicated organisations. The two overlap but are distinct domains."},
+  {id:8,w:2,cat:"Legacy Systems",
+   q:"What is the fundamental limitation of legacy Fraud Detection Systems (FDS) such as Clari5 that Bureau's FRM is designed to overcome?",
+   opts:[{t:"They cannot integrate with Card Management Systems or UPI networks at all",c:false},{t:"They were designed for post-factor detection and operate in batch mode — not truly real-time",c:true},{t:"They only support UPI and cannot handle card-based transactions",c:false},{t:"They lack rule-based engines and rely exclusively on machine learning",c:false}],
+   ex:"FDS systems like Clari5 were designed to detect fraud after the fact (post-factor). They run end-of-day in batch mode — a new fraud pattern could take up to 3 weeks to detect. Bureau's architecture is real-time by design."},
+  {id:9,w:2,cat:"Product Differentiation",
+   q:"How does Bureau's FRM differentiate itself from existing SDK-based device intelligence solutions that the sales team may have already sold to clients?",
+   opts:[{t:"Bureau's FRM works entirely within the user's active mobile session, providing stronger in-session signals",c:false},{t:"Bureau's FRM can automatically block cards without any human intervention",c:false},{t:"Bureau's FRM sits on the bank's server side and maintains historical customer profiles — not just session-based signals",c:true},{t:"Bureau's FRM only analyses financial transaction amounts, ignoring behavioural signals",c:false}],
+   ex:"Device/SDK solutions work only during an active session. Bureau's FRM sits server-side at the bank, building historical profiles over time — enabling detection of slow-burn scams like investment or romance fraud that unfold across many sessions."},
+  {id:10,w:2,cat:"Sales Strategy",
+   q:"When senior management at a bank evaluates an FRM vendor, in what ORDER do they prioritise their decision criteria according to the training?",
+   opts:[{t:"Features first → pricing second → vendor stability third",c:false},{t:"Pricing first → vendor stability second → features third",c:false},{t:"Vendor stability (market longevity) first → pricing second → product features third",c:true},{t:"Integration ease first → features second → pricing third",c:false}],
+   ex:"Praveen: 'When senior guys take a call, they take a call on the stability first, then price, then whatever features are there.' Lead with Bureau's growing track record — not features."},
+  {id:11,w:2,cat:"Product Capability",
+   q:"How does Bureau's FRM reduce false positives — for example when a customer makes an unusually large transaction from a new location?",
+   opts:[{t:"It automatically blocks all transactions exceeding a fixed rupee threshold",c:false},{t:"It only evaluates the current transaction against pre-configured rules, identical to legacy systems",c:false},{t:"It builds a historical customer profile and triggers step-up authentication (IVRS, WhatsApp, biometric) for anomalous transactions",c:true},{t:"It requires customers to pre-register travel plans in the FRM system before transacting abroad",c:false}],
+   ex:"Unlike legacy systems that evaluate only the current transaction, Bureau's FRM builds a historical profile. For anomalies it recommends step-up MFA — IVRS call, WhatsApp, or biometric — based on the bank's own risk policy."},
+  {id:12,w:2,cat:"What Bureau FRM Does NOT Do",
+   q:"When Bureau's FRM flags a suspicious transaction, what does it do — and what does it NOT do autonomously?",
+   opts:[{t:"It autonomously blocks the transaction and notifies the customer directly, without bank involvement",c:false},{t:"It takes the final approve/reject decision on every transaction without human review",c:false},{t:"It generates alerts and recommends actions (step-up auth, block, delegate) — the bank takes the final decision based on their risk policy",c:true},{t:"It only flags transactions after they are fully completed — never during the transaction",c:false}],
+   ex:"Bureau's FRM is a decisioning-support tool. It generates alerts and recommendations, but the bank configures its own risk policy and makes the final call. The FRM does not autonomously block transactions without bank-configured rules permitting it."},
+  {id:13,w:2,cat:"What Bureau FRM Does NOT Do",
+   q:"Which of the following is true about how Bureau's FRM handles Personally Identifiable Information (PII) when building customer profiles?",
+   opts:[{t:"FRM stores all PII including names, addresses, and Aadhaar numbers to enrich profiles",c:false},{t:"FRM links transactions to named individuals to identify repeat offenders across the network",c:false},{t:"FRM does NOT reveal PII — it tracks payment instruments (card number, UPI ID) not personal names",c:true},{t:"FRM requires mandatory full-KYC document submission before it can process any transactions",c:false}],
+   ex:"Praveen: 'None of the personal information is available to any of the systems. The PII is not revealed.' FRM profiles by instrument (card, UPI ID) — not by personal identity. An important privacy safeguard to highlight to BFSI customers."},
+  {id:14,w:2,cat:"Behavioural Signals",
+   q:"The training describes two distinct types of 'behavioural' signals in FRM. What are they?",
+   opts:[{t:"Online behaviour and offline behaviour",c:false},{t:"Transaction behaviour and login behaviour",c:false},{t:"Behavioural biometrics (mouse movement, typing pattern) AND customer behavioural profiling (usual transaction locations and spending habits)",c:true},{t:"Active behaviour (user-initiated) and passive background signals",c:false}],
+   ex:"Two types: (1) Behavioural biometrics — physical interaction patterns like mouse movement, thumb impression, typing rhythm. (2) Customer behavioural profiling — historical patterns like usual transaction locations and spending habits. Both feed into FRM decisioning."},
+  {id:15,w:2,cat:"Digital Banking",
+   q:"What is a key regulatory difference between digital/neo banks in India and their international counterparts like Revolut or Monzo?",
+   opts:[{t:"Indian digital banks can operate independently with just an RBI fintech licence",c:false},{t:"Indian digital banks must always have a licensed real bank behind them that maintains the actual Core Banking System",c:true},{t:"Indian digital banks are regulated by SEBI, not RBI",c:false},{t:"Indian digital banks can issue credit cards directly without any partner bank",c:false}],
+   ex:"Praveen: 'The digital banks in India have to have a real bank behind them.' E.g. Slice uses Federal Bank / North-East Bank. The real bank holds the CBS. This matters for FRM implementation — you integrate with the real bank's CBS, not just the neo-bank's front-end."},
+  {id:16,w:1,cat:"Banking Fundamentals",
+   q:"What is the primary role of a Core Banking System (CBS) in a bank, as described in the training?",
+   opts:[{t:"Managing card activation, expiry checks, NFC limits, and international transaction controls",c:false},{t:"Detecting and preventing fraudulent transactions in real-time across all channels",c:false},{t:"Acting as the bank's central ledger recording all credits and debits — the 'heart and brain' of the bank",c:true},{t:"Handling UPI authentication for all transactions routed through NPCI",c:false}],
+   ex:"Praveen: 'It's a ledger. It's nothing more than that.' CBS records credits (salary in) and debits (bills out). Card management (activation, expiry, NFC limits) lives in the separate Card Management System."},
+  {id:17,w:1,cat:"Sales Strategy",
+   q:"Based on the training, which type of prospect is the BEST starting point for pitching Bureau's FRM in India right now?",
+   opts:[{t:"Large established banks like ICICI or SBI that already have legacy FDS systems",c:false},{t:"Credit bureaus and rating agencies looking to expand into fraud monitoring",c:false},{t:"Neo-banks and digital challenger banks whose fraud losses are growing and who have no existing FRM solution",c:true},{t:"International payment processors operating in India under RBI oversight",c:false}],
+   ex:"Praveen: 'Start with new banks — their losses are growing and they do not have any such solutions in place.' Established banks require a longer replacement cycle. Neo-banks offer the fastest path to first wins."},
+  {id:18,w:1,cat:"FRM Fundamentals",
+   q:"Bureau's FRM is a 'superset' of transaction monitoring because it incorporates which additional signals?",
+   opts:[{t:"SWIFT codes, international clearing codes, and cross-border transaction metadata",c:false},{t:"ATM hardware logs and physical branch CCTV data",c:false},{t:"Device intelligence, behavioural biometrics, customer behaviour profiling, location, and KYC status signals",c:true},{t:"Credit scores, loan repayment history, and EMI bounce data from credit bureaus",c:false}],
+   ex:"FRM = Transaction Monitoring + Device signals (VPN, blacklisted IP) + Behavioural biometrics + Customer behavioural profiling + Location data + KYC status (full/partial/none) + BBPS bill payment consistency."},
+  {id:19,w:1,cat:"Sales Approach",
+   q:"According to the training, what approach must the sales team AVOID when pitching Bureau's FRM to executive-level prospects?",
+   opts:[{t:"Mentioning competitor names like Clari5 or FICO in discovery conversations",c:false},{t:"Discussing the product purely in terms of features or modules (e.g. 'we do transaction monitoring, we do case management, we do rules')",c:true},{t:"Highlighting Bureau's RBI compliance positioning",c:false},{t:"Asking discovery questions about the customer's current fraud system",c:false}],
+   ex:"Nagmanjunath: 'What I don't want people to do is actually talk about a product in terms of its capability by using features... the conversation becomes extremely transactional and you won't be able to elevate. You can't have this conversation with execs saying we do transaction monitoring, we do case management.' Sell the outcome — not the feature checklist."},
+  {id:20,w:1,cat:"Case Study",
+   q:"In the Booku case study, what was the fraud pattern and how long did their legacy Excel-based system take to identify it?",
+   opts:[{t:"Identity theft through forged KYC documents — detected within 24 hours",c:false},{t:"A circular money loop where POS merchants transferred funds among themselves to earn provider commissions — reviewed manually once a week, with new patterns taking up to 3 weeks to detect",c:true},{t:"Large one-off transactions from blacklisted IP addresses — detected in batch mode every 6 hours",c:false},{t:"Card skimming at ATMs across multiple cities — detected via weekly branch audits",c:false}],
+   ex:"Circular loop: A→B→C→back to A. Merchants got EDC machines issued and transacted among themselves to earn commissions. Booku used Excel — analysed weekly. New patterns took 3 weeks to detect. The 340K annual loss grew to ₹1M by the time Bureau was in discussions."},
+];
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let sQ=[],cI=0,sO=null,answ=false,epts=0,uA=[],tLeft=TIME_SEC,tInt=null,uName="",uEmail="";
+
+function shuf(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+function fmt(s){return`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`}
+
+// ── TEAM STORAGE ──────────────────────────────────────────────────────────────
+function getTeam(){
+  let t=JSON.parse(localStorage.getItem('frm_team')||'null');
+  if(!t){t=DEFAULT_TEAM.map(m=>({...m,done:false,score:null,pct:null,date:null}));localStorage.setItem('frm_team',JSON.stringify(t))}
+  return t;
+}
+function saveTeam(t){localStorage.setItem('frm_team',JSON.stringify(t))}
+
+// ── START ─────────────────────────────────────────────────────────────────────
+function startQuiz(){
+  uName=document.getElementById('iname').value.trim();
+  uEmail=document.getElementById('iemail').value.trim();
+  let ok=true;
+  if(!uName){document.getElementById('iname').classList.add('er');document.getElementById('ename').style.display='block';ok=false}
+  else{document.getElementById('iname').classList.remove('er');document.getElementById('ename').style.display='none'}
+  const bureauEmailRe=/^[A-Za-z0-9._%+-]+@bureau\.id$/i;
+  if(!uEmail||!bureauEmailRe.test(uEmail)){document.getElementById('iemail').classList.add('er');document.getElementById('eemail').style.display='block';ok=false}
+  else{document.getElementById('iemail').classList.remove('er');document.getElementById('eemail').style.display='none'}
+  if(!ok)return;
+  // Check if this email already completed the quiz
+  const lockKey='frm_done_'+uEmail.toLowerCase();
+  const lockData=localStorage.getItem(lockKey);
+  if(lockData){
+    const ld=JSON.parse(lockData);
+    document.getElementById('lock-score').textContent=ld.pct+'%  '+(ld.passed?'✅ PASS':'❌ FAIL');
+    document.getElementById('lock-detail').textContent=`Completed on ${ld.date}. Score: ${ld.score}/${TOTAL_PTS} (${ld.pct}%)`;
+    document.getElementById('lock-msg').style.display='block';
+    document.getElementById('start-btn').style.display='none';
+    document.getElementById('iname').closest('.nf').style.display='none';
+    return;
+  }
+  sQ=shuf(QS).map(q=>({...q,opts:shuf(q.opts)}));
+  cI=0;epts=0;uA=[];sO=null;answ=false;tLeft=TIME_SEC;
+  document.getElementById('tv').textContent=fmt(tLeft);
+  document.getElementById('land').style.display='none';
+  document.getElementById('quiz').style.display='block';
+  tInt=setInterval(()=>{tLeft--;updTmr();if(tLeft<=0){clearInterval(tInt);showRes();}},1000);
+  renderQ();
+}
+
+function updTmr(){
+  document.getElementById('tv').textContent=fmt(tLeft);
+  const b=document.getElementById('tb');
+  b.className='tmr'+(tLeft<=60?' danger':tLeft<=180?' warn':'');
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function renderQ(){
+  const q=sQ[cI];sO=null;answ=false;
+  document.getElementById('pf').style.width=(cI/sQ.length*100)+'%';
+  document.getElementById('pt').textContent=`Question ${cI+1} of ${sQ.length}`;
+  const wm={3:['w3','★★★ 3 pts — Critical'],2:['w2','★★ 2 pts — Important'],1:['w1','★ 1 pt — Foundational']};
+  const wd=document.getElementById('wd');wd.className='wb '+wm[q.w][0];wd.textContent=wm[q.w][1];
+  const tg=document.getElementById('qtg');tg.textContent=q.cat;tg.className='qtg'+(q.w===3?' cr':'');
+  document.getElementById('qtx').textContent=q.q;
+  const ol=document.getElementById('ol');ol.innerHTML='';
+  ['A','B','C','D'].forEach((l,i)=>{
+    const li=document.createElement('li');li.className='oi';li.id='o'+i;
+    li.innerHTML=`<label><input type="radio" name="op" value="${i}" onchange="selO(${i})"/><span class="om">${l}</span><span>${q.opts[i].t}</span></label>`;
+    ol.appendChild(li);
+  });
+  const ex=document.getElementById('ex');ex.style.display='none';ex.className='ex';
+  document.getElementById('bsub').style.display='inline-block';
+  document.getElementById('bsub').disabled=true;
+  document.getElementById('bnxt').style.display='none';
+  document.getElementById('bfin').style.display='none';
+  document.getElementById('sl').textContent=`Score: ${uA.reduce((s,a)=>s+a.e,0)} / ${TOTAL_PTS} pts`;
+}
+
+function selO(i){
+  if(answ)return;sO=i;
+  document.querySelectorAll('.oi').forEach((el,idx)=>el.classList.toggle('sel',idx===i));
+  document.getElementById('bsub').disabled=false;
+}
+
+// ── SUBMIT ────────────────────────────────────────────────────────────────────
+function submit(){
+  if(sO===null||answ)return;answ=true;
+  const q=sQ[cI],cIdx=q.opts.findIndex(o=>o.c),isOk=sO===cIdx,e=isOk?q.w:0;epts+=e;
+  uA.push({qId:q.id,qTx:q.q,cat:q.cat,w:q.w,e,sTx:q.opts[sO].t,cTx:q.opts[cIdx].t,isOk,ex:q.ex});
+  document.querySelectorAll('.oi').forEach((el,idx)=>{
+    el.querySelector('label').classList.add('off');
+    if(idx===cIdx)el.classList.add('ok');
+    else if(idx===sO&&!isOk)el.classList.add('ng');
+    else el.classList.add('dim');
+  });
+  const ex=document.getElementById('ex');
+  ex.className='ex '+(isOk?'ok':'ng');ex.style.display='block';
+  document.getElementById('el').textContent=isOk?`✓ Correct! +${q.w} point${q.w>1?'s':''}`:`✗ Incorrect — 0 points`;
+  document.getElementById('et').textContent=q.ex;
+  document.getElementById('sl').textContent=`Score: ${uA.reduce((s,a)=>s+a.e,0)} / ${TOTAL_PTS} pts`;
+  document.getElementById('bsub').style.display='none';
+  if(cI<sQ.length-1)document.getElementById('bnxt').style.display='inline-block';
+  else document.getElementById('bfin').style.display='inline-block';
+}
+function next(){cI++;renderQ();}
+
+// ── RESULTS ───────────────────────────────────────────────────────────────────
+function showRes(){
+  clearInterval(tInt);
+  while(uA.length<sQ.length){const q=sQ[uA.length];const cI2=q.opts.findIndex(o=>o.c);uA.push({qId:q.id,qTx:q.q,cat:q.cat,w:q.w,e:0,sTx:null,cTx:q.opts[cI2].t,isOk:false,ex:q.ex});}
+  const te=uA.reduce((s,a)=>s+a.e,0),pct=Math.round(te/TOTAL_PTS*100),cor=uA.filter(a=>a.isOk).length,passed=pct>=PASS_THRESH*100;
+  document.getElementById('quiz').style.display='none';document.getElementById('res').style.display='block';
+  let cls,vrd,head,sub;
+  if(pct>=80){cls='pass';vrd='PASS';head='Excellent! 🎉';sub="Strong FRM grasp — you're ready for client conversations."}
+  else if(pct>=70){cls='pass';vrd='PASS';head='Good job!';sub='Passed. Review the missed questions before your next pitch.'}
+  else if(pct>=50){cls='mrk';vrd='REVIEW';head='Almost there';sub='Key gaps remain. Re-watch the relevant training segments.'}
+  else{cls='fail';vrd='FAIL';head='More prep needed';sub='Please revisit the full training recording before approaching prospects.'}
+  const rc=document.getElementById('rcirc');rc.className='rc '+cls;
+  document.getElementById('rpct').textContent=pct+'%';document.getElementById('rvrd').textContent=vrd;
+  document.getElementById('rhead').textContent=head;document.getElementById('rsub').textContent=sub;
+  const hc=uA.filter(a=>a.w===3),mc=uA.filter(a=>a.w===2),lc=uA.filter(a=>a.w===1);
+  document.getElementById('sbrk').innerHTML=`
+    <div class="sc"><div class="sn">${te}/${TOTAL_PTS}</div><div class="sl2">Total Points</div></div>
+    <div class="sc"><div class="sn">${cor}/20</div><div class="sl2">Correct</div></div>
+    <div class="sc"><div class="sn">${hc.filter(a=>a.isOk).length}/${hc.length}</div><div class="sl2">Critical (3pt)</div></div>
+    <div class="sc"><div class="sn">${mc.filter(a=>a.isOk).length}/${mc.length}</div><div class="sl2">Important (2pt)</div></div>
+    <div class="sc"><div class="sn">${lc.filter(a=>a.isOk).length}/${lc.length}</div><div class="sl2">Foundation (1pt)</div></div>`;
+  const ts=new Date().toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  // Lock against retake — save completion data
+  localStorage.setItem('frm_done_'+uEmail.toLowerCase(),JSON.stringify({name:uName,score:te,pct,passed,date:ts}));
+  const shareStr=`Bureau FRM Quiz Result\nName: ${uName}\nEmail: ${uEmail}\nScore: ${te}/${TOTAL_PTS} (${pct}%)\nResult: ${passed?'PASS':'FAIL'}\nCorrect: ${cor}/20\nDate: ${ts}`;
+  document.getElementById('shc').textContent=shareStr;
+  document.getElementById('rl2').innerHTML=uA.map((a,i)=>{
+    const pc=a.isOk?'ry ok':'ry';const pts=a.isOk?`<span class="rp e">+${a.e}pt</span>`:`<span class="rp m">0/${a.w}pt</span>`;
+    return `<div class="ri"><div class="rq">Q${i+1} [${a.cat}] ${pts}<br/>${a.qTx}</div><div><span class="${pc}">Your answer: ${a.sTx||(a.sTx===null?'(timed out)':'—')} ${a.isOk?'✓':'✗'}</span>${!a.isOk?`<br/><span class="rco">Correct: ${a.cTx}</span>`:''}<br/><span style="color:var(--g500);font-size:.77rem">${a.ex}</span></div></div>`;
+  }).join('');
+  if(WEBHOOK_URL){fetch(WEBHOOK_URL,{method:'POST',mode:'no-cors',body:JSON.stringify({ts,name:uName,email:uEmail,score:te,total:TOTAL_PTS,pct,passed})}).catch(()=>{});}
+  // auto-update admin tracker
+  const team=getTeam();const idx=team.findIndex(m=>m.email.toLowerCase()===uEmail.toLowerCase()||m.name.toLowerCase()===uName.toLowerCase());
+  if(idx>-1){team[idx]={...team[idx],done:true,score:te,pct,date:ts};saveTeam(team);}
+}
+
+function togRev(){
+  const rl=document.getElementById('rl2');const btn=document.querySelector('.rt');
+  const op=rl.style.display==='none'||!rl.style.display;
+  rl.style.display=op?'block':'none';btn.textContent=op?'▲ Hide Detailed Review':'▼ Show Detailed Review';
+}
+function copyRes(){navigator.clipboard.writeText(document.getElementById('shc').textContent).then(()=>alert('Copied! Paste it into Slack or email to the admin.'));}
+function mailRes(){
+  const txt=document.getElementById('shc').textContent;
+  const subj=encodeURIComponent('FRM Quiz Result — '+uName);
+  const body=encodeURIComponent(`${txt}
+
+[A screenshot (FRM_Result_${uName.replace(/ /g,'_')}.png) has been auto-downloaded — please attach it to this email]
+
+(Auto-sent from Bureau FRM Quiz)`);
+  const mailUrl=`mailto:${ADMIN_EMAIL}?cc=${encodeURIComponent(ADMIN_CC)}&subject=${subj}&body=${body}`;
+  const hint=document.getElementById('ss-hint');
+  if(typeof html2canvas!=='undefined'){
+    html2canvas(document.getElementById('res'),{scale:2,backgroundColor:'#ffffff',useCORS:true,logging:false}).then(canvas=>{
+      const a=document.createElement('a');
+      a.download='FRM_Result_'+uName.replace(/ /g,'_')+'.png';
+      a.href=canvas.toDataURL('image/png');
+      a.click();
+      if(hint){hint.style.display='block';hint.textContent='📸 Screenshot downloaded! Please attach FRM_Result_'+uName.replace(/ /g,'_')+'.png to the email that just opened.';}
+      setTimeout(()=>window.location.href=mailUrl,500);
+    }).catch(()=>window.location.href=mailUrl);
+  }else{window.location.href=mailUrl;}
+}
+function retake(){/* Retake is disabled — one attempt per email. Contact praveen@bureau.id to reset. */}
+
+// ── ADMIN ─────────────────────────────────────────────────────────────────────
+let admUnlocked=false;
+function openAdm(){document.getElementById('adm-ov').classList.add('open');if(!admUnlocked){document.getElementById('alog').style.display='block';document.getElementById('adsh').style.display='none';}else{renderAdm();startDashPoll();}}
+function closeAdm(){document.getElementById('adm-ov').classList.remove('open');stopDashPoll();}
+function chkPw(){
+  if(document.getElementById('apw').value===ADMIN_PW){admUnlocked=true;document.getElementById('alog').style.display='none';document.getElementById('adsh').style.display='block';renderAdm();}
+  else{document.getElementById('pwe').style.display='block';document.getElementById('apw').value='';}
+}
+function renderAdm(){
+  const team=getTeam();const done=team.filter(m=>m.done).length;
+  const avgPct=done?Math.round(team.filter(m=>m.done).reduce((s,m)=>s+m.pct,0)/done):0;
+  const passed=team.filter(m=>m.done&&m.pct>=PASS_THRESH*100).length;
+  document.getElementById('astats').innerHTML=`
+    <div class="as"><div class="an">${done}/${team.length}</div><div class="al">Completed</div></div>
+    <div class="as"><div class="an">${team.length-done}</div><div class="al">Pending</div></div>
+    <div class="as"><div class="an">${passed}</div><div class="al">Passed</div></div>
+    <div class="as"><div class="an">${done?avgPct+'%':'—'}</div><div class="al">Avg Score</div></div>`;
+  const tb=document.getElementById('atbody');tb.innerHTML='';
+  team.forEach((m,i)=>{
+    const tr=document.createElement('tr');
+    const sdot=m.done?'dd':'dp';
+    const st=m.done?(m.pct>=PASS_THRESH*100?'✅ Passed':'❌ Failed'):'⏳ Pending';
+    const sc=m.done?`<span class="scl">${m.score}/${TOTAL_PTS}</span>`:'—';
+    const pc=m.done?m.pct+'%':'—';
+    const ab=m.done?`<button class="mb mu" onclick="togM(${i})">↩ Undo</button>`:`<button class="mb md" onclick="togM(${i})">✓ Mark Done</button>`;
+    tr.innerHTML=`<td><span class="sd ${sdot}"></span>${m.name}</td><td style="color:var(--g500);font-size:.78rem">${m.email}</td><td>${sc}</td><td>${pc}</td><td>${st}</td><td style="font-size:.75rem;color:var(--g500)">${m.date||'—'}</td><td>${ab}</td>`;
+    tb.appendChild(tr);
+  });
+}
+function togM(i){const t=getTeam();const m=t[i];if(m.done){t[i]={...m,done:false,score:null,pct:null,date:null};}else{t[i]={...m,done:true,score:'manual',pct:null,date:new Date().toLocaleString('en-IN')};}saveTeam(t);renderAdm();}
+function addM(){const n=document.getElementById('aname').value.trim(),e=document.getElementById('aemail').value.trim();if(!n)return;const t=getTeam();t.push({name:n,email:e||'',done:false,score:null,pct:null,date:null});saveTeam(t);renderAdm();document.getElementById('aname').value='';document.getElementById('aemail').value='';}
+function expCSV(){
+  const t=getTeam();
+  const rows=[['Name','Email','Score','Pct','Passed','Date'],...t.map(m=>[m.name,m.email,m.score??'',m.pct!=null?m.pct+'%':'',m.done?(m.pct!=null?m.pct>=PASS_THRESH*100?'Yes':'No':'Manual'):'Pending',m.date??''])];
+  const csv=rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='bureau-frm-quiz-results.csv';a.click();
+}
+function clrAdm(){if(confirm('Clear all scores? Team member list will remain.')){const t=getTeam().map(m=>({...m,done:false,score:null,pct:null,date:null}));saveTeam(t);renderAdm();}}
+
+// Live dashboard URL (stored locally for admin convenience)
+function getDashUrl(){return document.getElementById('ld-url-in')?.value||WEBHOOK_URL||'';}
+function saveDashUrl(v){localStorage.setItem('frm_dash_url',v);}
+
+let dashPollId=null;
+function startDashPoll(){
+  clearInterval(dashPollId);
+  fetchDash();
+  dashPollId=setInterval(fetchDash,DASH_POLL_SEC*1000);
+}
+function stopDashPoll(){clearInterval(dashPollId);dashPollId=null;}
+
+function fetchDash(){
+  const url=getDashUrl();
+  const st=document.getElementById('ld-status');
+  const msg=document.getElementById('ld-msg');
+  if(!url){if(st)st.textContent='Not configured';if(st)st.className='ld-pill';return;}
+  if(st){st.className='ld-pill live';st.textContent='Fetching…';}
+  fetch(url,{method:'GET',redirect:'follow'})
+    .then(r=>r.json())
+    .then(data=>{
+      if(st){st.textContent='● Live';st.className='ld-pill live';}
+      if(msg)msg.style.display='none';
+      const tbl=document.getElementById('ld-table');
+      const tbody=document.getElementById('ld-body');
+      if(!tbl||!tbody)return;
+      tbl.style.display='table';
+      tbody.innerHTML='';
+      const rows=[...data].reverse();
+      rows.forEach(r=>{
+        const tr=document.createElement('tr');
+        const passed=String(r.passed).toLowerCase()==='yes'||r.passed===true;
+        tr.innerHTML=`<td>${r.name||'—'}</td><td style="font-size:.75rem;color:var(--g500)">${r.email||'—'}</td><td class="scl">${r.score||'—'}/${r.total||TOTAL_PTS}</td><td>${r.pct||'—'}%</td><td>${passed?'✅':'❌'}</td><td style="font-size:.73rem;color:var(--g500)">${r.ts||r.timestamp||'—'}</td>`;
+        tbody.appendChild(tr);
+      });
+      if(!rows.length)tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--g500);padding:16px">No submissions yet</td></tr>';
+    })
+    .catch(()=>{
+      if(st){st.textContent='CORS blocked — open Sheet directly';st.className='ld-pill';}
+      if(msg){msg.style.display='block';msg.innerHTML='<strong>CORS issue with direct fetch.</strong> Open your <a href="'+url+'" target="_blank" style="color:var(--acc)">Google Sheet</a> to view live results, or export CSV above.';}
+    });
+}
+
+document.getElementById('adm-ov').addEventListener('click',function(e){if(e.target===this)closeAdm();});
+</script>
+</body>
+</html>
